@@ -42,7 +42,6 @@ namespace LesSolver.SuccessiveIterationMethod
         private double[] FindSolution(Matrix<double> leftMatrix, DenseVector rightMatrix, double delta)
         {
             bool isRightSolution = false;
-            bool isFirstIteration = true;
             double[] solutions = new double[leftMatrix.ColumnCount];
             double[] solutionsTemp = new double[leftMatrix.ColumnCount];
 
@@ -66,21 +65,17 @@ namespace LesSolver.SuccessiveIterationMethod
                     solutionsTemp[i] = (sum + rightMatrix[i]) / divider;
                 }
 
-                if (isFirstIteration)
-                    isFirstIteration = false;
-                else
-                {
-                    double max = double.MaxValue;
-                    for (int i = 0; i < solutionsTemp.Length; i++)
-                    {
-                        if (max > Math.Abs(solutionsTemp[i] - solutions[i]))
-                            max = Math.Abs(solutionsTemp[i] - solutions[i]);
-                        solutions[i] = solutionsTemp[i];
-                    }
 
-                    if (delta > max)
-                        break;
+                double max = double.MaxValue;
+                for (int i = 0; i < solutionsTemp.Length; i++)
+                {
+                    if (max > Math.Abs(solutionsTemp[i] - solutions[i]))
+                        max = Math.Abs(solutionsTemp[i] - solutions[i]);
+                    solutions[i] = solutionsTemp[i];
                 }
+
+                if (delta > max)
+                    break;
             }
             return solutions;
         }
